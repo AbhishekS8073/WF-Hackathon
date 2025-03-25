@@ -42,6 +42,8 @@ export function AccountsPage() {
     fetchUserData();
   }, [customerId]);
 
+  console.log(userData)
+
   useEffect(() => {
     const fetchTransactionData = async () => {
       try {

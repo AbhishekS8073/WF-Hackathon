@@ -310,12 +310,15 @@ def main():
         if recommender.validate_recommendation(recommendation):
             print("Recommended Credit Card:")
             print(json.dumps(recommendation, indent=2))
+            return json.dumps(recommendation, indent=2)
         else:
             print("Invalid recommendation format")
+            return {}
 
     except Exception as e:
         print(f"Recommendation process failed: {e}")
         print(traceback.format_exc())
+        return {}
 
 if __name__ == "__main__":
     main()

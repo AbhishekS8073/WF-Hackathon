@@ -3,11 +3,14 @@ import { CreditCard, Star, Award, Check } from "lucide-react";
 import * as Tabs from "@radix-ui/react-tabs";
 import { useBankStore } from "../store/useStore";
 
+const customerId='3';
+
 // Fallback image URL if the main one fails to load
 const FALLBACK_IMAGE =
   "https://images.pexels.com/photos/4386431/pexels-photo-4386431.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1";
 
 export function CardsPage() {
+  const [recommend, setRecommend] = useState<any>();
   const cards = [
     {
       id: "1",
@@ -27,7 +30,7 @@ export function CardsPage() {
       balance: 15000,
     },
   ]
-  
+
   const offers = [
     {
       id: "1",
@@ -117,6 +120,30 @@ export function CardsPage() {
       min_income_required: 1000000,
     },
   ]
+
+  useEffect(() => {
+    const fetchOffersData = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/recommenedOffers/${customerId}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+        const data = await response.json();
+        setOfferAPI(data.title);
+        setRecommend(data);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOffersData();
+  }, [customerId]);
+
+  console.log(recommend);
+
+  const [offerapi, setOfferAPI] = useState<any>();
 
   // Function to handle image loading errors
   const handleImageError = (
@@ -219,7 +246,9 @@ export function CardsPage() {
         <Tabs.Content value="offers" className="space-y-6">
           <div className="space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {offers.map((offer) => (
+              {offers
+              .filter((offer) => offer.title === offerapi)
+              .map((offer) => (
                 <div
                   key={offer.id}
                   className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 flex flex-col h-full"
@@ -246,6 +275,10 @@ export function CardsPage() {
                     </div>
                   </div>
                   <div className="p-5 flex flex-col flex-grow">
+                  <span className="font-medium">
+                    ${recommend.marketing_statement}
+                  </span>
+                  <br />
                     <div className="grid grid-cols-2 gap-3 mb-4 text-sm">
                       {"annual_fee" in offer && (
                         <div className="flex items-center gap-1.5">
@@ -301,3 +334,11 @@ export function CardsPage() {
     </div>
   );
 }
+function setError(message: any) {
+  throw new Error("Function not implemented.");
+}
+
+function setLoading(arg0: boolean) {
+  throw new Error("Function not implemented.");
+}
+
