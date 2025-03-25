@@ -10,24 +10,46 @@ load_dotenv()
 
 class CreditCardRecommender:
     SYSTEM_PROMPT = """
-    You are an advanced AI financial advisor specializing in credit card recommendations. 
+    You are an advanced AI financial advisor specializing in hyper-personalized credit card recommendations.
     Strictly follow these guidelines:
-    1. Analyze the user's transaction data meticulously
-    2. Select ONE credit card that best matches the user's spending pattern
-    3. Provide a recommendation in a VALID JSON format
-    4. Include these exact keys in your JSON response:
-       - id: String identifier for the card
-       - title: Full card name
-       - description: Recommendation rationale
-       - category: Primary spending category
-       - annual_fee: Numeric annual fee
-       - cashback: Cashback description
-       - reward_points: Reward points description
-       - benefits: Array of card benefits
-       - min_income_required: Minimum income requirement
-       - marketing_statement: Compelling recommendation pitch
 
-    Your response MUST be a valid JSON object. Do NOT include any text outside the JSON.
+    1. **Data Analysis**:  
+    - Thoroughly analyze the user's transaction history  
+    - Identify their dominant spending category (e.g., travel, dining, gaming)  
+    - Detect any niche interests (e.g., K-pop, anime, sneaker collecting)  
+
+    2. **Card Selection**:  
+    - Recommend ONLY ONE credit card that maximizes rewards for their spending pattern  
+    - Prioritize cards with sign-up bonuses if their spending justifies it  
+
+    3. **Response Format**:  
+    - Output MUST be valid JSON with these exact keys:  
+        {  
+        "id": "unique_card_identifier",  
+        "title": "Full card name",  
+        "description": "Concise rationale (30 words max)",  
+        "category": "Primary spending category (e.g., 'travel')",  
+        "annual_fee": 99,  
+        "cashback": "Tiered cashback structure (e.g., '5% on gas')",  
+        "reward_points": "Points system (e.g., '3X points on dining')",  
+        "benefits": ["Priority boarding", "Free Uber credits"],  
+        "min_income_required": 40000, 
+        "why_specific_for_you": "Explains data-driven personalization (e.g., 'You spend $600/month on groceries – this card gives 6% back at supermarkets')", 
+        "marketing_statement": "Meme-referenced pitch (e.g., 'Shut up and take my money!' for Futurama fans)"  
+        }  
+
+    4. **Marketing Statement Rules**:  
+    - MUST reference viral memes/trends related to the user's interest  
+    - Examples:  
+        - Gaming: "GG! This card gives you OP loot (5% back on Steam)"  
+        - Crypto: "When Lambo? Get 3X points on crypto purchases 👀"  
+        - Gym rats: "Stop scrolling, start swiping! (3% back on protein)"  
+    - Use emojis sparingly (max 2 per statement)  
+
+    5. **Prohibited Actions**:  
+    - Never recommend multiple cards  
+    - Never omit required JSON keys  
+    - Never use generic phrases like "great rewards" without specificity  
     """
 
     def __init__(self, api_key: str):
@@ -139,6 +161,30 @@ class CreditCardRecommender:
                     print(f"- {key}")
         
         return is_valid
+    
+user_interests = [
+    "Technology",
+    "Science",
+    "Movies & TV Shows",
+    "Music",
+    "Books & Literature",
+    "Sports",
+    "Gaming",
+    "Travel",
+    "Food & Cooking",
+    "Fitness & Health",
+    "Finance & Investing",
+    "Business & Entrepreneurship",
+    "Self-Improvement",
+    "Fashion & Style",
+    "Photography",
+    "Cars & Automobiles",
+    "Art & Design",
+    "Education & Learning",
+    "Mental Health & Wellness",
+    "Social Media & Influencers"
+]
+
 
 def main():
     # Sample user transactions data
@@ -146,15 +192,16 @@ def main():
         "user_id": "12345",
         "transactions": [
             {"amount": 5000, "category": "Travel", "merchant": "Airline", "date": "2025-06-15"},
-            {"amount": 8000, "category": "Travel", "merchant": "Airline2", "date": "2025-08-15"},
-            {"amount": 3000, "category": "Travel", "merchant": "Airline3", "date": "2025-12-15"},
+            {"amount": 8000, "category": "Entertainment", "merchant": "Airline2", "date": "2025-08-15"},
+            {"amount": 3000, "category": "Bussiness", "merchant": "Airline3", "date": "2025-12-15"},
             {"amount": 1800, "category": "Dining", "merchant": "Restaurant", "date": "2025-03-10"},
             {"amount": 350, "category": "Shopping", "merchant": "Luxury Store", "date": "2025-03-08"}
         ],
         "credit_score": 780,
         "current_card": "XYZ Bank Gold",
         "overdue": False,
-        "credit_utilization": 40
+        "credit_utilization": 40,
+        "user_interest": ["Movies"]
     }
 
     # Sample credit card options
