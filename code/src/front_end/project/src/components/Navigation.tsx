@@ -56,6 +56,16 @@ export function Navigation() {
             Cards
           </Link>
           <Link
+            to="/offers"
+            className={`text-sm font-medium ${
+              location.pathname === "/offers"
+                ? "text-[#D71E28] border-b-2 border-[#D71E28]"
+                : "text-gray-500 hover:text-[#D71E28]"
+            }`}
+          >
+            Offers
+          </Link>
+          <Link
             to="/loans"
             className={`text-sm font-medium ${
               location.pathname === "/loans"
