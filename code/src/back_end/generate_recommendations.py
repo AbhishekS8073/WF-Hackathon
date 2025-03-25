@@ -145,8 +145,10 @@ def main():
     user_transactions_data = {
         "user_id": "12345",
         "transactions": [
-            {"amount": 5000, "category": "Travel", "merchant": "Airline", "date": "2025-03-15"},
-            {"amount": 120000, "category": "Dining", "merchant": "Restaurant", "date": "2025-03-10"},
+            {"amount": 5000, "category": "Travel", "merchant": "Airline", "date": "2025-06-15"},
+            {"amount": 8000, "category": "Travel", "merchant": "Airline2", "date": "2025-08-15"},
+            {"amount": 3000, "category": "Travel", "merchant": "Airline3", "date": "2025-12-15"},
+            {"amount": 1800, "category": "Dining", "merchant": "Restaurant", "date": "2025-03-10"},
             {"amount": 350, "category": "Shopping", "merchant": "Luxury Store", "date": "2025-03-08"}
         ],
         "credit_score": 780,
