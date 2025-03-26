@@ -8,53 +8,51 @@ from openai import OpenAI
 # Load environment variables from .env file
 load_dotenv()
 
-class CreditCardRecommender:
-    SYSTEM_PROMPT = """
-    You are an advanced AI financial advisor specializing in hyper-personalized credit card recommendations.
+class CreditCardRecommender1:
+    SYSTEM_PROMPT1 = """
+    You are an advanced AI financial advisor specializing in hyper-personalized insurance recommendations.
     Strictly follow these guidelines:
 
     1. **Data Analysis**:  
-    - Thoroughly analyze the user's transaction history  
-    - Identify their dominant spending category (e.g., travel, dining, gaming)  
+    - Thoroughly analyze the user's transaction history    
     - Detect any niche interests (e.g., K-pop, anime, sneaker collecting)  
 
-    2. **Card Selection**:  
-    - Recommend ONLY ONE credit card that maximizes rewards for their spending pattern  
-    - Prioritize cards with sign-up bonuses if their spending justifies it  
+    2. **Insurance Selection**:  
+    - Recommend ONLY ONE insurance insurance that maximizes benefits for their spending pattern  
+    - Prioritize insurance with benefots if their spending justifies it  
 
     3. **Response Format**:  
     - Output MUST be valid JSON with these exact keys:  
         {  
-        "id": "unique_card_identifier",  
-        "title": "Full card name",  
+        "plan_name": "unique_plan_identifier",  
+        "title": "Full insurance name",  
         "description": "Concise rationale (30 words max)",  
-        "category": "Primary spending category (e.g., 'travel')",  
+        "category": "insurance categpry",  
         "annual_fee": 99,  
-        "cashback": "Tiered cashback structure (e.g., '5% on gas')",  
-        "reward_points": "Points system (e.g., '3X points on dining')",  
-        "benefits": ["Priority boarding", "Free Uber credits"],  
-        "min_income_required": 40000, 
-        "why_specific_for_you": "Explains data-driven personalization (e.g., 'You spend $600/month on groceries – this card gives 6% back at supermarkets')", 
-        "marketing_statement": "Meme-referenced pitch (e.g., 'Shut up and take my money!' for Futurama fans)"  
+        "coverage": "Insurance coverage (e.g., Up to ₹50,00,000 life cover)",
+        "benefits": ["Life cover with additional critical illness riders","Flexible premium payment terms",],  
+        "min_age_required": 18, 
+        "why_specific_for_you": "Explains data-driven personalization (e.g., 'You spend $600/month on hospitals – this insurance gives 500000 cover')", 
+        "marketing_statement": "Meme-referenced pitch (e.g., 'Shut up and take my insurance!' for Futurama fans)"  
         }  
 
     4. **Marketing Statement Rules**:  
     - MUST reference viral memes/trends related to the user's interest  
     - Examples:  
-        - Gaming: "GG! This card gives you OP loot (5% back on Steam)"  
+        - Gaming: "GG! This insurance gives you OP loot (5% back on Steam)"  
         - Crypto: "When Lambo? Get 3X points on crypto purchases 👀"  
         - Gym rats: "Stop scrolling, start swiping! (3% back on protein)"  
     - Use emojis sparingly (max 2 per statement)  
 
     5. **Prohibited Actions**:  
-    - Never recommend multiple cards  
+    - Never recommend more than TWO insurance  
     - Never omit required JSON keys  
     - Never use generic phrases like "great rewards" without specificity  
     """
 
     def __init__(self, api_key: str):
         """
-        Initialize the credit card recommendation system with OpenRouter
+        Initialize the insurance recommendation system with OpenRouter
         
         :param api_key: OpenRouter API key
         """
@@ -63,17 +61,17 @@ class CreditCardRecommender:
             base_url='https://openrouter.ai/api/v1'
         )
 
-    def recommend_credit_card(
+    def recommend_credit_card1(
         self, 
         user_transactions_data: Dict, 
-        credit_card_options: Dict
+        insurance_options: Dict
     ) -> Dict:
         """
-        Recommend the most suitable credit card based on user data
+        Recommend the TWO suitable insurance based on user data
         
         :param user_transactions_data: User's transaction history and profile
-        :param credit_card_options: Available credit card options
-        :return: Recommended credit card as a dictionary
+        :param insurance_options: Available insurance options
+        :return: Recommended insurance as a dictionary
         """
         try:
             # Prepare the recommendation request
@@ -89,7 +87,7 @@ class CreditCardRecommender:
                         'role': 'user',
                         'content': json.dumps({
                             'user_transactions_data': user_transactions_data,
-                            'credit_card_options': credit_card_options,
+                            'insurance_options': insurance_options,
                             'detailed_instructions': '''
                                 CRITICAL: Your response MUST be a VALID JSON object.
                                 - Do NOT add any text before or after the JSON
@@ -133,22 +131,22 @@ class CreditCardRecommender:
             return recommendation
 
         except Exception as error:
-            print(f'Credit Card Recommendation Error: {error}')
+            print(f'Insurance Recommendation Error: {error}')
             print(traceback.format_exc())  # Print full traceback
             raise
 
-    def validate_recommendation(self, recommendation: Dict) -> bool:
+    def validate_recommendation1(self, recommendation: Dict) -> bool:
         """
-        Validate the structure of the credit card recommendation
+        Validate the structure of the insurance recommendation
         
-        :param recommendation: Recommended credit card dictionary
+        :param recommendation: Recommended insurance dictionary
         :return: Whether the recommendation is valid
         """
         required_keys = [
-            'id', 'title', 'description', 
+            'plan_name', 'title', 'description', 
             'category', 'annual_fee', 
-            'cashback', 'reward_points', 
-            'benefits', 'min_income_required'
+            'coverage', 'min_age_required', 
+            'benefits',
         ]
         
         # Detailed validation
@@ -162,33 +160,9 @@ class CreditCardRecommender:
         
         return is_valid
     
-user_interests = [
-    "Technology",
-    "Science",
-    "Movies & TV Shows",
-    "Music",
-    "Books & Literature",
-    "Sports",
-    "Gaming",
-    "Travel",
-    "Food & Cooking",
-    "Fitness & Health",
-    "Finance & Investing",
-    "Business & Entrepreneurship",
-    "Self-Improvement",
-    "Fashion & Style",
-    "Photography",
-    "Cars & Automobiles",
-    "Art & Design",
-    "Education & Learning",
-    "Mental Health & Wellness",
-    "Social Media & Influencers"
-]
-
-
 def main():
     # Sample user transactions data
-    user_transactions_data = {
+    user_transactions_data1 = {
         "user_id": "12345",
         "transactions": [
             {"amount": 5000, "category": "Travel", "merchant": "Airline", "date": "2025-06-15"},
@@ -294,21 +268,117 @@ def main():
         ]
     }
 
+    insurance_options = {
+        "insurance_plans": [
+            {
+                "plan_name": "Elite Health Coverage",
+                "category": "Health",
+                "annual_premium": 15000,
+                "coverage": "Up to ₹10,00,000 for hospitalization, surgeries, and critical illnesses",
+                "benefits": [
+                    "Cashless treatment at network hospitals",
+                    "Pre and post-hospitalization coverage",
+                    "Free annual health check-ups",
+                    "Maternity and new-born baby coverage"
+                ],
+                "min_age_required": 18,
+                "max_age_limit": 65,
+                "insurance_provider": "HealthGuard Insurance"
+            },
+            {
+                "plan_name": "Global Travel Shield",
+                "category": "Travel",
+                "annual_premium": 12000,
+                "coverage": "Comprehensive travel insurance including trip cancellations and medical emergencies",
+                "benefits": [
+                    "Emergency medical evacuation",
+                    "Trip interruption and cancellation cover",
+                    "Lost luggage and personal belongings cover",
+                    "24/7 customer assistance and helpline"
+                ],
+                "min_age_required": 18,
+                "max_age_limit": 70,
+                "insurance_provider": "SafeTravel Insurance"
+            },
+            {
+                "plan_name": "Family Protect Plus",
+                "category": "Family",
+                "annual_premium": 25000,
+                "coverage": "Up to ₹15,00,000 for health, accidents, and death benefits for the entire family",
+                "benefits": [
+                    "Covers hospitalization and critical illness for the entire family",
+                    "Accidental death and disability benefits",
+                    "Daily cash allowance for hospitalization",
+                    "Emergency ambulance coverage"
+                ],
+                "min_age_required": 18,
+                "max_age_limit": 70,
+                "insurance_provider": "FamilyCare Insurers"
+            },
+            {
+                "plan_name": "Car Accident Protection",
+                "category": "Vehicle",
+                "annual_premium": 8000,
+                "coverage": "Comprehensive coverage for accidents, damage, and theft of the car",
+                "benefits": [
+                    "Zero depreciation cover",
+                    "Third-party liability cover",
+                    "Own damage protection",
+                    "Roadside assistance and emergency towing"
+                ],
+                "min_age_required": 21,
+                "max_age_limit": 65,
+                "insurance_provider": "DriveSafe Insurance"
+            },
+            {
+                "plan_name": "Home Shield Protection",
+                "category": "Home",
+                "annual_premium": 10000,
+                "coverage": "Up to ₹20,00,000 for fire, theft, and natural disaster damage to your home",
+                "benefits": [
+                    "Damage caused by fire, flooding, and earthquakes",
+                    "Loss or theft of personal belongings",
+                    "Liability coverage for injuries or accidents at home",
+                    "Temporary accommodation cover if home is uninhabitable"
+                ],
+                "min_age_required": 25,
+                "max_age_limit": 70,
+                "insurance_provider": "HomeGuard Insurance"
+            },
+            {
+                "plan_name": "LifeSecure Term Plan",
+                "category": "Life",
+                "annual_premium": 5000,
+                "coverage": "Up to ₹50,00,000 life cover with flexible premium payment options",
+                "benefits": [
+                    "Life cover with additional critical illness riders",
+                    "Flexible premium payment terms",
+                    "Nominee benefits in case of untimely death",
+                    "Tax-saving under section 80C"
+                ],
+                "min_age_required": 18,
+                "max_age_limit": 60,
+                "insurance_provider": "LifeSecure Insurers"
+            }
+        ]
+    }
+
+
     # Initialize recommender
-    recommender = CreditCardRecommender(
+    recommender = CreditCardRecommender1(
         api_key=os.getenv('OPENROUTER_API_KEY', '')  # Use OpenRouter API key from environment
     )
 
     try:
         # Get recommendation
-        recommendation = recommender.recommend_credit_card(
-            user_transactions_data, 
-            credit_card_options
+        recommendation = recommender.recommend_credit_card1(
+            user_transactions_data1, 
+            insurance_options
         )
 
         # Validate recommendation
-        if recommender.validate_recommendation(recommendation):
-            print("Recommended Credit Card:")
+        if recommender.validate_recommendation1(recommendation):
+            print("Recommended Insurance:")
             print(json.dumps(recommendation, indent=2))
             return json.dumps(recommendation, indent=2)
         else:
