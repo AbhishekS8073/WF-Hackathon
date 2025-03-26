@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { CreditCard, Star, Award, Check } from "lucide-react";
+import { CreditCard, Star, Award, Check, Sparkles, ArrowRight, Heart, Wallet, Shield } from "lucide-react";
 import * as Tabs from "@radix-ui/react-tabs";
 import { useBankStore } from "../store/useStore";
 import { useAuth } from "../App";
@@ -171,8 +171,6 @@ export function CardsPage() {
     fetchOffersData();
   }, [user?.id]);
 
-  console.log(recommend);
-
   // Function to handle image loading errors
   const handleImageError = (
     e: React.SyntheticEvent<HTMLImageElement, Event>
@@ -181,29 +179,37 @@ export function CardsPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-3 mb-8">
-        <CreditCard className="text-[#D71E28] h-8 w-8" />
-        <h1 className="text-3xl font-bold">Cards</h1>
+    <div className="space-y-8">
+      {/* Header Section */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="bg-gradient-to-br from-indigo-500/10 to-purple-500/10 p-3 rounded-xl backdrop-blur-sm border border-indigo-100/50">
+            <CreditCard className="text-indigo-600 h-8 w-8" />
+          </div>
+          <div>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 bg-clip-text text-transparent">Cards</h1>
+            <p className="text-gray-600">Manage your credit and debit cards</p>
+          </div>
+        </div>
       </div>
 
       <Tabs.Root defaultValue="credit" className="space-y-6">
-        <Tabs.List className="flex space-x-2 border-b">
+        <Tabs.List className="flex space-x-2 border-b border-gray-200">
           <Tabs.Trigger
             value="credit"
-            className="px-6 py-3 text-sm font-medium text-gray-600 hover:text-[#D71E28] border-b-2 border-transparent data-[state=active]:border-[#D71E28] data-[state=active]:text-[#D71E28]"
+            className="px-6 py-3 text-sm font-medium text-gray-600 hover:text-indigo-600 border-b-2 border-transparent data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 transition-colors duration-200"
           >
             Credit Cards
           </Tabs.Trigger>
           <Tabs.Trigger
             value="debit"
-            className="px-6 py-3 text-sm font-medium text-gray-600 hover:text-[#D71E28] border-b-2 border-transparent data-[state=active]:border-[#D71E28] data-[state=active]:text-[#D71E28]"
+            className="px-6 py-3 text-sm font-medium text-gray-600 hover:text-indigo-600 border-b-2 border-transparent data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 transition-colors duration-200"
           >
             Debit Cards
           </Tabs.Trigger>
           <Tabs.Trigger
             value="offers"
-            className="px-6 py-3 text-sm font-medium text-gray-600 hover:text-[#D71E28] border-b-2 border-transparent data-[state=active]:border-[#D71E28] data-[state=active]:text-[#D71E28]"
+            className="px-6 py-3 text-sm font-medium text-gray-600 hover:text-indigo-600 border-b-2 border-transparent data-[state=active]:border-indigo-600 data-[state=active]:text-indigo-600 transition-colors duration-200"
           >
             Special Offers
           </Tabs.Trigger>
@@ -216,25 +222,42 @@ export function CardsPage() {
               .map((card) => (
                 <div
                   key={card.id}
-                  className="bg-white p-6 rounded-xl shadow-sm"
+                  className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 overflow-hidden hover:shadow-2xl transition-all duration-300 group"
                 >
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center">
-                      <h3 className="text-xl font-semibold">Credit Card</h3>
-                      <CreditCard className="text-[#D71E28]" />
-                    </div>
-                    <div className="p-4 bg-gray-50 rounded-lg">
-                      <p className="text-sm text-gray-600">Card Number</p>
-                      <p className="text-xl font-medium">{card.number}</p>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <p className="text-sm text-gray-600">Balance</p>
-                        <p className="font-medium">${card.balance}</p>
+                  <div className="relative h-48 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 p-8 text-white">
+                    <div className="absolute inset-0 bg-black/10"></div>
+                    <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0wIDBoNjB2NjBIMHoiLz48cGF0aCBkPSJNMzYuMzQzIDM2LjM0M2E2IDYgMCAxMS04LjQ4NS04LjQ4NCA2IDYgMCAwMTguNDg1IDguNDg0eiIgZmlsbD0iI2ZmZiIgZmlsbC1vcGFjaXR5PSIuMSIvPjwvZz48L3N2Zz4=')] opacity-20"></div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
+                    <div className="relative z-10">
+                      <div className="flex items-center gap-2 mb-3">
+                        <Star className="h-5 w-5 text-yellow-300 animate-pulse" />
+                        <span className="text-sm font-medium bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full border border-white/20">Credit Card</span>
                       </div>
-                      <div>
-                        <p className="text-sm text-gray-600">Credit Limit</p>
-                        <p className="font-medium">${card.limit}</p>
+                      <h2 className="text-2xl font-bold mb-2">{card.name}</h2>
+                      <p className="text-white/90">{card.number}</p>
+                    </div>
+                  </div>
+                  
+                  <div className="p-8 space-y-6">
+                    <div className="grid grid-cols-2 gap-6">
+                      <div className="bg-gradient-to-br from-indigo-50/80 to-purple-50/80 p-6 rounded-xl border border-indigo-100/50 backdrop-blur-sm hover:shadow-lg transition-all duration-300 group">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="p-2 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-lg group-hover:scale-110 transition-transform duration-300">
+                            <Wallet className="h-5 w-5 text-indigo-600" />
+                          </div>
+                          <h3 className="font-semibold text-indigo-900">Balance</h3>
+                        </div>
+                        <p className="text-2xl font-bold text-indigo-600">₹{card.balance}</p>
+                      </div>
+                      
+                      <div className="bg-gradient-to-br from-indigo-50/80 to-purple-50/80 p-6 rounded-xl border border-indigo-100/50 backdrop-blur-sm hover:shadow-lg transition-all duration-300 group">
+                        <div className="flex items-center gap-3 mb-4">
+                          <div className="p-2 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-lg group-hover:scale-110 transition-transform duration-300">
+                            <Shield className="h-5 w-5 text-indigo-600" />
+                          </div>
+                          <h3 className="font-semibold text-indigo-900">Credit Limit</h3>
+                        </div>
+                        <p className="text-2xl font-bold text-indigo-600">₹{card.limit}</p>
                       </div>
                     </div>
                   </div>
@@ -250,20 +273,31 @@ export function CardsPage() {
               .map((card) => (
                 <div
                   key={card.id}
-                  className="bg-white p-6 rounded-xl shadow-sm"
+                  className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 overflow-hidden hover:shadow-2xl transition-all duration-300 group"
                 >
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-center">
-                      <h3 className="text-xl font-semibold">Debit Card</h3>
-                      <CreditCard className="text-[#D71E28]" />
+                  <div className="relative h-48 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 p-8 text-white">
+                    <div className="absolute inset-0 bg-black/10"></div>
+                    <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0wIDBoNjB2NjBIMHoiLz48cGF0aCBkPSJNMzYuMzQzIDM2LjM0M2E2IDYgMCAxMS04LjQ4NS04LjQ4NCA2IDYgMCAwMTguNDg1IDguNDg0eiIgZmlsbD0iI2ZmZiIgZmlsbC1vcGFjaXR5PSIuMSIvPjwvZz48L3N2Zz4=')] opacity-20"></div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
+                    <div className="relative z-10">
+                      <div className="flex items-center gap-2 mb-3">
+                        <Star className="h-5 w-5 text-yellow-300 animate-pulse" />
+                        <span className="text-sm font-medium bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full border border-white/20">Debit Card</span>
+                      </div>
+                      <h2 className="text-2xl font-bold mb-2">{card.name}</h2>
+                      <p className="text-white/90">{card.number}</p>
                     </div>
-                    <div className="p-4 bg-gray-50 rounded-lg">
-                      <p className="text-sm text-gray-600">Card Number</p>
-                      <p className="text-xl font-medium">{card.number}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-600">Available Balance</p>
-                      <p className="font-medium">${card.balance}</p>
+                  </div>
+                  
+                  <div className="p-8 space-y-6">
+                    <div className="bg-gradient-to-br from-indigo-50/80 to-purple-50/80 p-6 rounded-xl border border-indigo-100/50 backdrop-blur-sm hover:shadow-lg transition-all duration-300 group">
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="p-2 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-lg group-hover:scale-110 transition-transform duration-300">
+                          <Wallet className="h-5 w-5 text-indigo-600" />
+                        </div>
+                        <h3 className="font-semibold text-indigo-900">Available Balance</h3>
+                      </div>
+                      <p className="text-2xl font-bold text-indigo-600">₹{card.balance}</p>
                     </div>
                   </div>
                 </div>
@@ -284,32 +318,37 @@ export function CardsPage() {
                   {[1, 2, 3, 4].map((index) => (
                     <div
                       key={index}
-                      className="bg-white rounded-xl overflow-hidden shadow-md animate-pulse"
+                      className="bg-white/80 backdrop-blur-sm rounded-xl overflow-hidden shadow-xl border border-white/20 animate-pulse"
                     >
-                      <div className="h-56 bg-gray-200"></div>
+                      <div className="h-56 bg-gradient-to-br from-indigo-100 to-purple-100"></div>
                       <div className="p-5 space-y-4">
-                        <div className="h-6 bg-gray-200 rounded w-3/4"></div>
+                        <div className="h-6 bg-gradient-to-r from-indigo-100 to-purple-100 rounded w-3/4"></div>
                         <div className="flex gap-2">
-                          <div className="h-6 bg-gray-200 rounded w-1/4"></div>
+                          <div className="h-6 bg-gradient-to-r from-indigo-100 to-purple-100 rounded w-1/4"></div>
                         </div>
                         <div className="space-y-2">
-                          <div className="h-4 bg-gray-200 rounded w-full"></div>
-                          <div className="h-4 bg-gray-200 rounded w-5/6"></div>
-                          <div className="h-4 bg-gray-200 rounded w-4/6"></div>
+                          <div className="h-4 bg-gradient-to-r from-indigo-100 to-purple-100 rounded w-full"></div>
+                          <div className="h-4 bg-gradient-to-r from-indigo-100 to-purple-100 rounded w-5/6"></div>
+                          <div className="h-4 bg-gradient-to-r from-indigo-100 to-purple-100 rounded w-4/6"></div>
                         </div>
                         <div className="space-y-2">
-                          <div className="h-4 bg-gray-200 rounded w-1/3"></div>
-                          <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                          <div className="h-4 bg-gradient-to-r from-indigo-100 to-purple-100 rounded w-1/3"></div>
+                          <div className="h-4 bg-gradient-to-r from-indigo-100 to-purple-100 rounded w-1/2"></div>
                         </div>
-                        <div className="h-10 bg-gray-200 rounded mt-4"></div>
+                        <div className="h-10 bg-gradient-to-r from-indigo-100 to-purple-100 rounded mt-4"></div>
                       </div>
                     </div>
                   ))}
                 </div>
               </>
             ) : error ? (
-              <div className="text-center py-8">
-                <p className="text-red-500">Error: {error}</p>
+              <div className="bg-red-50 p-6 rounded-xl border border-red-100">
+                <div className="flex items-center gap-3 text-red-600">
+                  <div className="p-2 bg-red-100 rounded-lg">
+                    <Shield className="h-6 w-6" />
+                  </div>
+                  <p className="font-medium">Error: {error}</p>
+                </div>
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -318,7 +357,7 @@ export function CardsPage() {
                   .map((offer) => (
                     <div
                       key={offer.id}
-                      className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 flex flex-col h-full"
+                      className="bg-white/80 backdrop-blur-sm rounded-xl overflow-hidden shadow-xl border border-white/20 hover:shadow-2xl transition-all duration-300 group"
                     >
                       <div className="relative h-56 bg-gray-100">
                         <img
@@ -334,31 +373,31 @@ export function CardsPage() {
                           </h3>
                           <div className="flex items-center gap-2 flex-wrap">
                             {offer.category && (
-                              <span className="bg-[#D71E28] text-white text-xs px-3 py-1 rounded-full font-medium">
+                              <span className="bg-indigo-600/80 backdrop-blur-sm text-white text-xs px-3 py-1 rounded-full font-medium border border-white/20">
                                 {offer.category}
                               </span>
                             )}
                           </div>
                         </div>
                       </div>
-                      <div className="p-5 flex flex-col flex-grow">
-                        <span className="font-medium">
-                          ${recommend.marketing_statement}
+                      <div className="p-6 flex flex-col flex-grow">
+                        <span className="font-medium text-indigo-900">
+                          {recommend?.marketing_statement}
                         </span>
                         <br />
                         <div className="grid grid-cols-2 gap-3 mb-4 text-sm">
                           {"annual_fee" in offer && (
                             <div className="flex items-center gap-1.5">
-                              <Award className="h-4 w-4 text-[#D71E28]" />
-                              <span className="font-medium">
-                                ${offer.annual_fee}/yr
+                              <Award className="h-4 w-4 text-indigo-600" />
+                              <span className="font-medium text-indigo-900">
+                                ₹{offer.annual_fee}/yr
                               </span>
                             </div>
                           )}
                           {"cashback" in offer && offer.cashback && (
                             <div className="flex items-center gap-1.5">
-                              <Star className="h-4 w-4 text-[#D71E28]" />
-                              <span className="font-medium">
+                              <Star className="h-4 w-4 text-indigo-600" />
+                              <span className="font-medium text-indigo-900">
                                 {offer.cashback}
                               </span>
                             </div>
@@ -373,14 +412,14 @@ export function CardsPage() {
 
                         {offer.benefits && offer.benefits.length > 0 && (
                           <div className="mt-auto">
-                            <h4 className="text-sm font-semibold mb-2 flex items-center gap-1.5">
-                              <Check className="h-4 w-4 text-[#D71E28]" />
+                            <h4 className="text-sm font-semibold mb-2 flex items-center gap-1.5 text-indigo-900">
+                              <Check className="h-4 w-4 text-indigo-600" />
                               Key Benefits
                             </h4>
                             <ul className="text-xs text-gray-600 space-y-1.5">
                               {offer.benefits.map((benefit, index) => (
                                 <li key={index} className="flex items-start">
-                                  <span className="text-[#D71E28] mr-1.5">
+                                  <span className="text-indigo-600 mr-1.5">
                                     •
                                   </span>
                                   <span>{benefit}</span>
@@ -390,9 +429,11 @@ export function CardsPage() {
                           </div>
                         )}
 
-                        <div className="mt-5 pt-4 border-t border-gray-100">
-                          <button className="bg-[#D71E28] text-white w-full py-2 rounded-md text-sm font-medium hover:bg-[#c01824] transition-colors duration-200">
+                        <div className="mt-5 pt-4 border-t border-indigo-100">
+                          <button className="w-full bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 text-white py-2 rounded-xl text-sm font-medium hover:from-indigo-700 hover:via-purple-700 hover:to-pink-600 transition-all duration-300 flex items-center justify-center gap-2 group shadow-lg shadow-indigo-500/20 hover:shadow-xl hover:shadow-indigo-500/30">
+                            <Sparkles className="h-4 w-4 group-hover:rotate-12 transition-transform duration-300" />
                             Apply Now
+                            <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
                           </button>
                         </div>
                       </div>

@@ -1,102 +1,169 @@
-import React from 'react';
-import { Wallet } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { Wallet, Shield, CheckCircle2, Sparkles, ArrowRight, Star, Award, Heart } from 'lucide-react';
+import { useAuth } from '../App';
 
 export function LoansPage() {
+  const { user } = useAuth();
+  const [insuranceRecommendation, setInsuranceRecommendation] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchInsuranceRecommendation = async () => {
+      if (!user?.id) {
+        setError("User not authenticated");
+        setIsLoading(false);
+        return;
+      }
+
+      setIsLoading(true);
+      setError(null);
+      try {
+        const response = await fetch(`/api/recommenedInsurance/${user.id}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch insurance recommendation");
+        }
+        const data = await response.json();
+        setInsuranceRecommendation(data);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchInsuranceRecommendation();
+  }, [user?.id]);
+
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-3 mb-8">
-        <Wallet className="text-[#D71E28] h-8 w-8" />
-        <h1 className="text-3xl font-bold">Insurance</h1>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="bg-white p-6 rounded-xl shadow-sm">
-          <h2 className="text-xl font-semibold mb-4">Personal Loan</h2>
-          <div className="space-y-4">
-            <div className="p-4 bg-gray-50 rounded-lg">
-              <p className="text-sm text-gray-600">Outstanding Balance</p>
-              <p className="text-2xl font-semibold">$25,000</p>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-sm text-gray-600">Interest Rate</p>
-                <p className="font-medium">5.99% APR</p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-600">Monthly Payment</p>
-                <p className="font-medium">$483.25</p>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-sm text-gray-600">Next Payment</p>
-                <p className="font-medium">Apr 1, 2024</p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-600">Term Remaining</p>
-                <p className="font-medium">48 months</p>
-              </div>
-            </div>
+    <div className="space-y-8">
+      {/* Header Section */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="bg-gradient-to-br from-indigo-500/10 to-purple-500/10 p-3 rounded-xl backdrop-blur-sm border border-indigo-100/50">
+            <Shield className="text-indigo-600 h-8 w-8" />
           </div>
-        </div>
-
-        <div className="bg-white p-6 rounded-xl shadow-sm">
-          <h2 className="text-xl font-semibold mb-4">Auto Loan</h2>
-          <div className="space-y-4">
-            <div className="p-4 bg-gray-50 rounded-lg">
-              <p className="text-sm text-gray-600">Outstanding Balance</p>
-              <p className="text-2xl font-semibold">$18,500</p>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-sm text-gray-600">Interest Rate</p>
-                <p className="font-medium">4.25% APR</p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-600">Monthly Payment</p>
-                <p className="font-medium">$375.50</p>
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <p className="text-sm text-gray-600">Next Payment</p>
-                <p className="font-medium">Apr 15, 2024</p>
-              </div>
-              <div>
-                <p className="text-sm text-gray-600">Term Remaining</p>
-                <p className="font-medium">36 months</p>
-              </div>
-            </div>
+          <div>
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 bg-clip-text text-transparent">Insurance</h1>
+            <p className="text-gray-600">Your personalized insurance recommendations</p>
           </div>
         </div>
       </div>
 
-      <div className="bg-white p-6 rounded-xl shadow-sm">
-        <h2 className="text-xl font-semibold mb-4">Payment History</h2>
-        <div className="space-y-4">
-          <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
-            <div>
-              <p className="font-medium">Personal Loan Payment</p>
-              <p className="text-sm text-gray-600">Mar 1, 2024</p>
+      {isLoading ? (
+        <div className="flex items-center justify-center min-h-[400px]">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+        </div>
+      ) : error ? (
+        <div className="bg-red-50 p-6 rounded-xl border border-red-100">
+          <div className="flex items-center gap-3 text-red-600">
+            <div className="p-2 bg-red-100 rounded-lg">
+              <Shield className="h-6 w-6" />
             </div>
-            <span className="text-green-600">$483.25</span>
-          </div>
-          <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
-            <div>
-              <p className="font-medium">Auto Loan Payment</p>
-              <p className="text-sm text-gray-600">Feb 15, 2024</p>
-            </div>
-            <span className="text-green-600">$375.50</span>
-          </div>
-          <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
-            <div>
-              <p className="font-medium">Personal Loan Payment</p>
-              <p className="text-sm text-gray-600">Feb 1, 2024</p>
-            </div>
-            <span className="text-green-600">$483.25</span>
+            <p className="font-medium">Error: {error}</p>
           </div>
         </div>
-      </div>
+      ) : insuranceRecommendation ? (
+        <div className="space-y-6">
+          {/* Main Recommendation Card */}
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 overflow-hidden hover:shadow-2xl transition-all duration-300">
+            <div className="relative h-48 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 p-8 text-white">
+              <div className="absolute inset-0 bg-black/10"></div>
+              <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0wIDBoNjB2NjBIMHoiLz48cGF0aCBkPSJNMzYuMzQzIDM2LjM0M2E2IDYgMCAxMS04LjQ4NS04LjQ4NCA2IDYgMCAwMTguNDg1IDguNDg0eiIgZmlsbD0iI2ZmZiIgZmlsbC1vcGFjaXR5PSIuMSIvPjwvZz48L3N2Zz4=')] opacity-20"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent"></div>
+              <div className="relative z-10">
+                <div className="flex items-center gap-2 mb-3">
+                  <Star className="h-5 w-5 text-yellow-300 animate-pulse" />
+                  <span className="text-sm font-medium bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full border border-white/20">Recommended Plan</span>
+                </div>
+                <h2 className="text-2xl font-bold mb-2">{insuranceRecommendation.title}</h2>
+                <p className="text-white/90">{insuranceRecommendation.description}</p>
+              </div>
+            </div>
+            
+            <div className="p-8 space-y-6">
+              {/* Key Details */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-gradient-to-br from-indigo-50/80 to-purple-50/80 p-6 rounded-xl border border-indigo-100/50 backdrop-blur-sm hover:shadow-lg transition-all duration-300 group">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-2 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-lg group-hover:scale-110 transition-transform duration-300">
+                      <Wallet className="h-5 w-5 text-indigo-600" />
+                    </div>
+                    <h3 className="font-semibold text-indigo-900">Annual Premium</h3>
+                  </div>
+                  <p className="text-2xl font-bold text-indigo-600">₹{insuranceRecommendation.annual_fee}</p>
+                </div>
+                
+                <div className="bg-gradient-to-br from-indigo-50/80 to-purple-50/80 p-6 rounded-xl border border-indigo-100/50 backdrop-blur-sm hover:shadow-lg transition-all duration-300 group">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-2 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-lg group-hover:scale-110 transition-transform duration-300">
+                      <Shield className="h-5 w-5 text-indigo-600" />
+                    </div>
+                    <h3 className="font-semibold text-indigo-900">Coverage</h3>
+                  </div>
+                  <p className="text-2xl font-bold text-indigo-600">{insuranceRecommendation.coverage}</p>
+                </div>
+              </div>
+
+              {/* Benefits Section */}
+              <div>
+                <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-indigo-900">
+                  <CheckCircle2 className="h-5 w-5 text-indigo-600" />
+                  Key Benefits
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {insuranceRecommendation.benefits.map((benefit: string, index: number) => (
+                    <div key={index} className="flex items-start gap-3 bg-gradient-to-br from-indigo-50/80 to-purple-50/80 p-4 rounded-xl border border-indigo-100/50 backdrop-blur-sm hover:shadow-lg transition-all duration-300 group">
+                      <div className="p-1.5 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-lg group-hover:scale-110 transition-transform duration-300">
+                        <CheckCircle2 className="h-5 w-5 text-indigo-600" />
+                      </div>
+                      <span className="text-indigo-900 group-hover:text-indigo-700 transition-colors duration-300">{benefit}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Personalized Recommendation */}
+              <div className="bg-gradient-to-br from-blue-50/80 to-indigo-50/80 p-6 rounded-xl border border-blue-100/50 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-lg">
+                    <Sparkles className="h-5 w-5 text-blue-600 animate-pulse" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-blue-900 mb-2">Why This Plan is Perfect for You</h3>
+                    <p className="text-blue-800">{insuranceRecommendation.why_specific_for_you}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Marketing Statement */}
+              <div className="text-center bg-gradient-to-br from-purple-50/80 to-pink-50/80 p-6 rounded-xl border border-purple-100/50 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Heart className="h-5 w-5 text-pink-500 animate-pulse" />
+                  <p className="text-lg font-medium text-purple-900">{insuranceRecommendation.marketing_statement}</p>
+                </div>
+              </div>
+
+              {/* Apply Button */}
+              <div className="pt-4">
+                <button className="w-full bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 text-white py-4 rounded-xl font-medium hover:from-indigo-700 hover:via-purple-700 hover:to-pink-600 transition-all duration-300 flex items-center justify-center gap-2 group shadow-lg shadow-indigo-500/20 hover:shadow-xl hover:shadow-indigo-500/30">
+                  <Award className="h-5 w-5 group-hover:rotate-12 transition-transform duration-300" />
+                  Apply for Insurance
+                  <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div className="bg-gradient-to-br from-indigo-50/80 to-purple-50/80 p-8 rounded-xl text-center border border-indigo-100/50 backdrop-blur-sm">
+          <div className="p-3 bg-gradient-to-br from-indigo-100 to-purple-100 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+            <Shield className="h-8 w-8 text-indigo-600" />
+          </div>
+          <h3 className="text-xl font-semibold mb-2 text-indigo-900">No Insurance Recommendations Available</h3>
+          <p className="text-indigo-700">We're currently analyzing your profile to provide personalized insurance recommendations.</p>
+        </div>
+      )}
     </div>
   );
 }

@@ -7,7 +7,7 @@ import { Chatbot } from "./components/Chatbot";
 import { HomePage } from "./pages/HomePage";
 import { AccountsPage } from "./pages/AccountsPage";
 import { CardsPage } from "./pages/CardsPage";
-import { LoansPage } from "./pages/LoansPage";
+import { LoansPage as InsurancePage } from "./pages/LoansPage";
 import { InvestmentsPage } from "./pages/InvestmentsPage";
 import { OffersPage } from "./pages/OffersPage";
 import { LoginPage } from "./pages/LoginPage";
@@ -150,9 +150,9 @@ function App() {
                   <CardsPage />
                 </ProtectedRoute>
               } />
-              <Route path="/loans" element={
+              <Route path="/insurance" element={
                 <ProtectedRoute>
-                  <LoansPage />
+                  <InsurancePage />
                 </ProtectedRoute>
               } />
               <Route path="/investments" element={

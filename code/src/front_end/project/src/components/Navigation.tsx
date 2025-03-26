@@ -66,14 +66,14 @@ export function Navigation() {
             Offers
           </Link>
           <Link
-            to="/loans"
+            to="/insurance"
             className={`text-sm font-medium ${
-              location.pathname === "/loans"
+              location.pathname === "/insurance"
                 ? "text-[#D71E28] border-b-2 border-[#D71E28]"
                 : "text-gray-500 hover:text-[#D71E28]"
             }`}
           >
-            Loans
+            Insurance
           </Link>
           <Link
             to="/investments"

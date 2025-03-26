@@ -32,15 +32,15 @@ export function HomePage() {
       </Link>
 
       <Link
-        to="/loans"
+        to="/insurance"
         className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow"
       >
         <div className="flex items-center gap-3 mb-4">
           <Wallet className="text-[#D71E28]" />
-          <h2 className="text-xl font-semibold">Loans</h2>
+          <h2 className="text-xl font-semibold">Insurance</h2>
         </div>
         <p className="text-gray-600">
-          View your loans and make payments
+          View your insurance recommendations and coverage
         </p>
       </Link>
 
