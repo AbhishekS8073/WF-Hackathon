@@ -6,7 +6,7 @@ export function LoansPage() {
     <div className="space-y-6">
       <div className="flex items-center gap-3 mb-8">
         <Wallet className="text-[#D71E28] h-8 w-8" />
-        <h1 className="text-3xl font-bold">Loans</h1>
+        <h1 className="text-3xl font-bold">Insurance</h1>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
