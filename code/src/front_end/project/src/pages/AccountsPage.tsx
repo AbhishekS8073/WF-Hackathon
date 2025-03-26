@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Building2 } from 'lucide-react';
+import { useAuth } from '../App';
 
 export function AccountsPage() {
-  // State to hold the user data fetched from the API
-  // const [userData, setUserData] = useState<any>(null);
+  const { user } = useAuth();
   const [userData, setUserData] = useState({
     account_number: '',
     account_type: '',
@@ -19,14 +19,23 @@ export function AccountsPage() {
   const [error, setError] = useState<string | null>(null);
   const [transaction, setTransaction] = useState<any[]>([]);
 
-  // Replace this with the actual customer_id or pass it dynamically
-  const customerId = '1';
+  // Format number to 2 decimal places
+  const formatAmount = (amount: string | number) => {
+    const num = parseFloat(amount.toString());
+    return isNaN(num) ? 'N/A' : `$${num.toFixed(2)}`;
+  };
 
   // Fetch user data from the Flask API
   useEffect(() => {
     const fetchUserData = async () => {
+      if (!user?.id) {
+        setError('User not authenticated');
+        setLoading(false);
+        return;
+      }
+
       try {
-        const response = await fetch(`/api/user/${customerId}`);
+        const response = await fetch(`/api/user/${user.id}`);
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
@@ -40,19 +49,22 @@ export function AccountsPage() {
     };
 
     fetchUserData();
-  }, [customerId]);
-
-  console.log(userData)
+  }, [user?.id]);
 
   useEffect(() => {
     const fetchTransactionData = async () => {
+      if (!user?.id) {
+        setError('User not authenticated');
+        setLoading(false);
+        return;
+      }
+
       try {
-        const response = await fetch(`/api/transaction/${customerId}`);
+        const response = await fetch(`/api/transaction/${user.id}`);
         if (!response.ok) {
           throw new Error('Failed to fetch transaction data');
         }
         const data = await response.json();
-        // Ensure we're setting an array of transactions
         setTransaction(Array.isArray(data) ? data : []);
       } catch (err: any) {
         setError(err.message);
@@ -62,18 +74,27 @@ export function AccountsPage() {
     };
 
     fetchTransactionData();
-  }, [customerId]);
-
-  console.log(transaction);
+  }, [user?.id]);
 
   // If still loading, display a loading message
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#D71E28]"></div>
+      </div>
+    );
   }
 
   // If there's an error fetching the data, display an error message
   if (error) {
-    return <div>Error: {error}</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-red-600 text-center">
+          <p className="text-xl font-semibold">Error</p>
+          <p>{error}</p>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -89,11 +110,11 @@ export function AccountsPage() {
           <div className="space-y-4">
             <div className="p-4 bg-gray-50 rounded-lg">
               <p className="text-sm text-gray-600">Available Balance</p>
-              <p className="text-2xl font-semibold">{userData?`$${userData.balance}` : 'N/A'}</p>
+              <p className="text-2xl font-semibold">{formatAmount(userData?.balance)}</p>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">Account Number</span>
-              <span>{userData.account_number}</span>
+              <span>{userData?.account_number || 'N/A'}</span>
             </div>
           </div>
         </div>
@@ -103,15 +124,15 @@ export function AccountsPage() {
           <div className="space-y-4">
             <div className="p-4 bg-gray-50 rounded-lg">
               <p className="text-sm text-gray-600">Available Balance</p>
-              <p className="text-2xl font-semibold">${userData.balance}</p>
+              <p className="text-2xl font-semibold">{formatAmount(userData?.balance)}</p>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">Account Number</span>
-              <span>{userData.account_number}</span>
+              <span>{userData?.account_number || 'N/A'}</span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-gray-600">Interest Rate</span>
-              <span>{userData.interest_rate}</span>
+              <span>{userData?.interest_rate ? `${parseFloat(userData.interest_rate).toFixed(2)}%` : 'N/A'}</span>
             </div>
           </div>
         </div>
@@ -128,7 +149,7 @@ export function AccountsPage() {
                   <p className="text-sm text-gray-600">{transactions.created_at}</p>
                 </div>
                 <span className={transactions.type === 'debit' ? 'text-red-600' : 'text-green-600'}>
-                  {transactions.type === 'debit' ? '-' : '+'}${transactions.amount}
+                  {transactions.type === 'debit' ? '-' : '+'}{formatAmount(transactions.amount)}
                 </span>
               </div>
             ))

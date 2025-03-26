@@ -2,24 +2,26 @@ import React, { useEffect, useState } from "react";
 import { CreditCard, Star, Award, Check } from "lucide-react";
 import * as Tabs from "@radix-ui/react-tabs";
 import { useBankStore } from "../store/useStore";
-
-const customerId='3';
+import { useAuth } from "../App";
 
 // Fallback image URL if the main one fails to load
 const FALLBACK_IMAGE =
   "https://images.pexels.com/photos/4386431/pexels-photo-4386431.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1";
 
 export function CardsPage() {
+  const { user } = useAuth();
   const [recommend, setRecommend] = useState<any>();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [offerapi, setOfferAPI] = useState<any>();
+
   const cards = [
     {
       id: "1",
       type: "credit",
       number: "**** **** **** 1234",
       expiryDate: "12/25",
-      name: "John Doe",
+      name: user?.name || "User",
       limit: 10000,
       balance: 2500,
     },
@@ -28,7 +30,7 @@ export function CardsPage() {
       type: "debit",
       number: "**** **** **** 5678",
       expiryDate: "06/26",
-      name: "John Doe",
+      name: user?.name || "User",
       balance: 15000,
     },
   ]
@@ -125,10 +127,16 @@ export function CardsPage() {
 
   useEffect(() => {
     const fetchOffersData = async () => {
+      if (!user?.id) {
+        setError('User not authenticated');
+        setIsLoading(false);
+        return;
+      }
+
       setIsLoading(true);
       setError(null);
       try {
-        const response = await fetch(`/api/recommenedOffers/${customerId}`);
+        const response = await fetch(`/api/recommenedOffers/${user.id}`);
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
@@ -143,11 +151,9 @@ export function CardsPage() {
     };
 
     fetchOffersData();
-  }, [customerId]);
+  }, [user?.id]);
 
   console.log(recommend);
-
-  const [offerapi, setOfferAPI] = useState<any>();
 
   // Function to handle image loading errors
   const handleImageError = (
