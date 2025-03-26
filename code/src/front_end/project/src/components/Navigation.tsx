@@ -29,9 +29,9 @@ export function Navigation() {
             <button className="md:hidden">
               <Menu size={24} />
             </button>
-            <button className="bg-[#D71E28] text-white px-6 py-2 rounded-full hover:bg-red-700">
+            {/* <button className="bg-[#D71E28] text-white px-6 py-2 rounded-full hover:bg-red-700">
               Sign Out
-            </button>
+            </button> */}
           </div>
         </div>
         <div className="mt-4 flex space-x-6">

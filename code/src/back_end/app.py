@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 import csv
 import os
@@ -33,22 +33,66 @@ data_dir = os.path.join(src_dir, 'data')
 
 # Load users data from the CSV file when the app starts
 try:
-    users_data = load_from_csv(os.path.join(data_dir, 'accounts.csv'))
+    account_data = load_from_csv(os.path.join(data_dir, 'accounts.csv'))
     transaction_date = load_from_csv(os.path.join(data_dir, 'transactions.csv'))
     cards_date = load_from_csv(os.path.join(data_dir, 'cards.csv'))
+    user_info = load_from_csv(os.path.join(data_dir, 'users.csv'))
     print("Successfully loaded all CSV files")
-    print(f"Loaded {len(users_data)} users, {len(transaction_date)} transactions, {len(cards_date)} cards")
+    print(f"Loaded {len(account_data)} accounts, {len(transaction_date)} transactions, {len(cards_date)} cards, {len(user_info)} users")
 except Exception as e:
     print(f"Error loading CSV files: {str(e)}")
-    users_data = []
+    account_data = []
     transaction_date = []
     cards_date = []
+    user_info = []
+
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    user_id = data.get('id')
+    password = data.get('password')
+
+    print("Login attempt - User ID:", user_id)
+    print("Password provided:", password)
+
+    # Find user in user_info using user_id and password
+    user = next((u for u in user_info if u['id'] == user_id and u['password'] == password), None)
+    print("User found:", user)
+
+    if user:
+        # Return comprehensive user data for localStorage
+        return jsonify({
+            'id': user['id'],
+            'username': user.get('username', user['id']),
+            'email': user.get('email', ''),
+            'name': user.get('name', ''),
+            'phone': user.get('phone', ''),
+            'income': user.get('income', ''),
+            'address': user.get('address', ''),
+            'city': user.get('city', ''),
+            'state': user.get('state', ''),
+            'zip': user.get('zip', ''),
+            'date_of_birth': user.get('date_of_birth', ''),
+            'isLoggedIn': True
+        })
+    
+    return jsonify({'error': 'Invalid credentials'}), 401
+
+@app.route('/signout', methods=['POST'])
+def signout():
+    # Since we're not maintaining any server-side session,
+    # we just return a success response
+    # The frontend should handle clearing any stored credentials
+    return jsonify({
+        'message': 'Successfully signed out',
+        'status': 'success'
+    }), 200
 
 # Route to fetch user details by customer_id
 @app.route('/user/<customer_id>', methods=['GET'])
 def get_user_by_customer_id(customer_id):
     # Search for the user with the matching customer_id
-    user = next((user for user in users_data if user["user_id"] == customer_id), None)
+    user = next((user for user in account_data if user["user_id"] == customer_id), None)
     
     if user:
         return jsonify(user), 200  # Return user data as JSON with HTTP status 200
