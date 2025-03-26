@@ -26,7 +26,7 @@ export function AccountsPage() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/user/${customerId}`);
+        const response = await fetch(`/api/user/${customerId}`);
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
@@ -47,12 +47,13 @@ export function AccountsPage() {
   useEffect(() => {
     const fetchTransactionData = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/transaction/${customerId}`);
+        const response = await fetch(`/api/transaction/${customerId}`);
         if (!response.ok) {
-          throw new Error('Failed to fetch data');
+          throw new Error('Failed to fetch transaction data');
         }
         const data = await response.json();
-        setTransaction(data);
+        // Ensure we're setting an array of transactions
+        setTransaction(Array.isArray(data) ? data : []);
       } catch (err: any) {
         setError(err.message);
       } finally {
@@ -119,17 +120,21 @@ export function AccountsPage() {
       <div className="bg-white p-6 rounded-xl shadow-sm mt-6">
         <h2 className="text-xl font-semibold mb-4">Recent Transactions</h2>
         <div className="space-y-4">
-          {transaction.map((transactions, index) => (
-            <div key={index} className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
-              <div>
-                <p className="font-medium">{(transactions.category)}</p>
-                <p className="text-sm text-gray-600">{transactions.created_at}</p>
+          {Array.isArray(transaction) && transaction.length > 0 ? (
+            transaction.map((transactions, index) => (
+              <div key={index} className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+                <div>
+                  <p className="font-medium">{transactions.category}</p>
+                  <p className="text-sm text-gray-600">{transactions.created_at}</p>
+                </div>
+                <span className={transactions.type === 'debit' ? 'text-red-600' : 'text-green-600'}>
+                  {transactions.type === 'debit' ? '-' : '+'}${transactions.amount}
+                </span>
               </div>
-              <span className={transactions.type === 'debit' ? 'text-red-600' : 'text-green-600'}>
-                {transactions.type === 'debit' ? '-' : '+'}${transactions.amount}
-              </span>
-            </div>
-          ))}
+            ))
+          ) : (
+            <p>No recent transactions found.</p>
+          )}
         </div>
       </div>
     </div>

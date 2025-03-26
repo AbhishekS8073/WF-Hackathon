@@ -1,11 +1,18 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 import csv
+import os
 
 app = Flask(__name__)
 
 # Enable CORS for all routes (you can be more specific if needed)
-CORS(app, origins=["http://127.0.0.1:5173"])
+# CORS(app, resources={
+#     r"/*": {
+#         "origins": ["http://localhost:5173", "http://127.0.0.1:5173"],
+#         "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+#         "allow_headers": ["Content-Type", "Authorization"]
+#     }
+# })
 # Function to load users from a CSV file
 def load_from_csv(file_path):
     users = []
@@ -17,10 +24,25 @@ def load_from_csv(file_path):
             users.append(row)
     return users
 
+# Get the directory of the current script
+current_dir = os.path.dirname(os.path.abspath(__file__))
+# Go up to src directory
+src_dir = os.path.abspath(os.path.join(current_dir, '..'))
+# Data directory path
+data_dir = os.path.join(src_dir, 'data')
+
 # Load users data from the CSV file when the app starts
-users_data = load_from_csv('C:/Users/abhis/OneDrive/Desktop/Hackathon/WF-Hackathon/code/src/data/accounts.csv')
-transaction_date = load_from_csv('C:/Users/abhis/OneDrive/Desktop/Hackathon/WF-Hackathon/code/src/data/transactions.csv')
-cards_date = load_from_csv('C:/Users/abhis/OneDrive/Desktop/Hackathon/WF-Hackathon/code/src/data/cards.csv')
+try:
+    users_data = load_from_csv(os.path.join(data_dir, 'accounts.csv'))
+    transaction_date = load_from_csv(os.path.join(data_dir, 'transactions.csv'))
+    cards_date = load_from_csv(os.path.join(data_dir, 'cards.csv'))
+    print("Successfully loaded all CSV files")
+    print(f"Loaded {len(users_data)} users, {len(transaction_date)} transactions, {len(cards_date)} cards")
+except Exception as e:
+    print(f"Error loading CSV files: {str(e)}")
+    users_data = []
+    transaction_date = []
+    cards_date = []
 
 # Route to fetch user details by customer_id
 @app.route('/user/<customer_id>', methods=['GET'])
@@ -380,4 +402,4 @@ def get_recommend_offers_customer_id(customer_id):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5001, debug=True)
