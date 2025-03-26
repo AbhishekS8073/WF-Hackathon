@@ -33,9 +33,27 @@ export function CardsPage() {
       name: user?.name || "User",
       balance: 15000,
     },
-  ]
+  ];
 
   const offers = [
+    {
+      id: "Luxury_Prestige_Platinum",
+      title: "Luxury Prestige Platinum",
+      description:
+        "Maximizes rewards on luxury purchases with high-end benefits.",
+      category: "Luxury",
+      annual_fee: 4999,
+      cashback: "3% on premium brands",
+      reward_points: "20x on luxury shopping",
+      benefits: [
+        "Personalized concierge service",
+        "Access to exclusive fashion events",
+        "Free business-class flight upgrade once a year",
+      ],
+      min_income_required: 1000000,
+      image:
+        "https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    },
     {
       id: "1",
       title: "Elite Dining Rewards",
@@ -123,12 +141,12 @@ export function CardsPage() {
       ],
       min_income_required: 1000000,
     },
-  ]
+  ];
 
   useEffect(() => {
     const fetchOffersData = async () => {
       if (!user?.id) {
-        setError('User not authenticated');
+        setError("User not authenticated");
         setIsLoading(false);
         return;
       }
@@ -138,7 +156,7 @@ export function CardsPage() {
       try {
         const response = await fetch(`/api/recommenedOffers/${user.id}`);
         if (!response.ok) {
-          throw new Error('Failed to fetch data');
+          throw new Error("Failed to fetch data");
         }
         const data = await response.json();
         setOfferAPI(data.title);
@@ -264,7 +282,10 @@ export function CardsPage() {
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {[1, 2, 3, 4].map((index) => (
-                    <div key={index} className="bg-white rounded-xl overflow-hidden shadow-md animate-pulse">
+                    <div
+                      key={index}
+                      className="bg-white rounded-xl overflow-hidden shadow-md animate-pulse"
+                    >
                       <div className="h-56 bg-gray-200"></div>
                       <div className="p-5 space-y-4">
                         <div className="h-6 bg-gray-200 rounded w-3/4"></div>
@@ -293,86 +314,90 @@ export function CardsPage() {
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {offers
-                .filter((offer) => offer.title === offerapi)
-                .map((offer) => (
-                  <div
-                    key={offer.id}
-                    className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 flex flex-col h-full"
-                  >
-                    <div className="relative h-56 bg-gray-100">
-                      <img
-                        src={offer.image}
-                        alt={offer.title}
-                        className="w-full h-full object-cover"
-                        onError={handleImageError}
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent p-6 flex flex-col justify-end">
-                        <h3 className="text-xl font-semibold text-white mb-2">
-                          {offer.title}
-                        </h3>
-                        <div className="flex items-center gap-2 flex-wrap">
-                          {offer.category && (
-                            <span className="bg-[#D71E28] text-white text-xs px-3 py-1 rounded-full font-medium">
-                              {offer.category}
-                            </span>
+                  .filter((offer) => offer.title === offerapi)
+                  .map((offer) => (
+                    <div
+                      key={offer.id}
+                      className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 flex flex-col h-full"
+                    >
+                      <div className="relative h-56 bg-gray-100">
+                        <img
+                          src={offer.image}
+                          alt={offer.title}
+                          className="w-full h-full object-cover"
+                          onError={handleImageError}
+                          loading="lazy"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent p-6 flex flex-col justify-end">
+                          <h3 className="text-xl font-semibold text-white mb-2">
+                            {offer.title}
+                          </h3>
+                          <div className="flex items-center gap-2 flex-wrap">
+                            {offer.category && (
+                              <span className="bg-[#D71E28] text-white text-xs px-3 py-1 rounded-full font-medium">
+                                {offer.category}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="p-5 flex flex-col flex-grow">
+                        <span className="font-medium">
+                          ${recommend.marketing_statement}
+                        </span>
+                        <br />
+                        <div className="grid grid-cols-2 gap-3 mb-4 text-sm">
+                          {"annual_fee" in offer && (
+                            <div className="flex items-center gap-1.5">
+                              <Award className="h-4 w-4 text-[#D71E28]" />
+                              <span className="font-medium">
+                                ${offer.annual_fee}/yr
+                              </span>
+                            </div>
+                          )}
+                          {"cashback" in offer && offer.cashback && (
+                            <div className="flex items-center gap-1.5">
+                              <Star className="h-4 w-4 text-[#D71E28]" />
+                              <span className="font-medium">
+                                {offer.cashback}
+                              </span>
+                            </div>
                           )}
                         </div>
-                      </div>
-                    </div>
-                    <div className="p-5 flex flex-col flex-grow">
-                    <span className="font-medium">
-                      ${recommend.marketing_statement}
-                    </span>
-                    <br />
-                      <div className="grid grid-cols-2 gap-3 mb-4 text-sm">
-                        {"annual_fee" in offer && (
-                          <div className="flex items-center gap-1.5">
-                            <Award className="h-4 w-4 text-[#D71E28]" />
-                            <span className="font-medium">
-                              ${offer.annual_fee}/yr
-                            </span>
+
+                        {offer.description && (
+                          <p className="text-sm text-gray-700 mb-4 flex-grow">
+                            {offer.description}
+                          </p>
+                        )}
+
+                        {offer.benefits && offer.benefits.length > 0 && (
+                          <div className="mt-auto">
+                            <h4 className="text-sm font-semibold mb-2 flex items-center gap-1.5">
+                              <Check className="h-4 w-4 text-[#D71E28]" />
+                              Key Benefits
+                            </h4>
+                            <ul className="text-xs text-gray-600 space-y-1.5">
+                              {offer.benefits.map((benefit, index) => (
+                                <li key={index} className="flex items-start">
+                                  <span className="text-[#D71E28] mr-1.5">
+                                    •
+                                  </span>
+                                  <span>{benefit}</span>
+                                </li>
+                              ))}
+                            </ul>
                           </div>
                         )}
-                        {"cashback" in offer && offer.cashback && (
-                          <div className="flex items-center gap-1.5">
-                            <Star className="h-4 w-4 text-[#D71E28]" />
-                            <span className="font-medium">{offer.cashback}</span>
-                          </div>
-                        )}
-                      </div>
 
-                      {offer.description && (
-                        <p className="text-sm text-gray-700 mb-4 flex-grow">
-                          {offer.description}
-                        </p>
-                      )}
-
-                      {offer.benefits && offer.benefits.length > 0 && (
-                        <div className="mt-auto">
-                          <h4 className="text-sm font-semibold mb-2 flex items-center gap-1.5">
-                            <Check className="h-4 w-4 text-[#D71E28]" />
-                            Key Benefits
-                          </h4>
-                          <ul className="text-xs text-gray-600 space-y-1.5">
-                            {offer.benefits.map((benefit, index) => (
-                              <li key={index} className="flex items-start">
-                                <span className="text-[#D71E28] mr-1.5">•</span>
-                                <span>{benefit}</span>
-                              </li>
-                            ))}
-                          </ul>
+                        <div className="mt-5 pt-4 border-t border-gray-100">
+                          <button className="bg-[#D71E28] text-white w-full py-2 rounded-md text-sm font-medium hover:bg-[#c01824] transition-colors duration-200">
+                            Apply Now
+                          </button>
                         </div>
-                      )}
-
-                      <div className="mt-5 pt-4 border-t border-gray-100">
-                        <button className="bg-[#D71E28] text-white w-full py-2 rounded-md text-sm font-medium hover:bg-[#c01824] transition-colors duration-200">
-                          Apply Now
-                        </button>
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             )}
           </div>
@@ -381,4 +406,3 @@ export function CardsPage() {
     </div>
   );
 }
-
