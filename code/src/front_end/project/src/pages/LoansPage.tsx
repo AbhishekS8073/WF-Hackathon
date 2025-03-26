@@ -82,6 +82,36 @@ export function LoansPage() {
             </div>
             
             <div className="p-8 space-y-6">
+              {/* Marketing Statement */}
+              <div className="relative overflow-hidden bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-rose-500/10 p-4 rounded-xl border border-purple-100/50 backdrop-blur-sm hover:shadow-xl transition-all duration-300 group">
+                {/* Animated background elements */}
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1),transparent)]"></div>
+                <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0wIDBoNjB2NjBIMHoiLz48cGF0aCBkPSJNMzYuMzQzIDM2LjM0M2E2IDYgMCAxMS04LjQ4NS04LjQ4NCA2IDYgMCAwMTguNDg1IDguNDg0eiIgZmlsbD0iI2ZmZiIgZmlsbC1vcGFjaXR5PSIuMSIvPjwvZz48L3N2Zz4=')] opacity-10"></div>
+                
+                {/* Content */}
+                <div className="relative z-10 flex flex-col items-center text-center space-y-2">
+                  {/* Icon container with animated glow */}
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-gradient-to-r from-pink-500/20 to-purple-500/20 blur-xl rounded-full animate-pulse"></div>
+                    <div className="relative p-1.5 bg-gradient-to-br from-pink-100 to-purple-100 rounded-lg group-hover:scale-110 transition-transform duration-300">
+                      <Heart className="h-4 w-4 text-pink-500 animate-pulse" />
+                    </div>
+                  </div>
+
+                  {/* Text with gradient and animation */}
+                  <div className="space-y-0.5">
+                    <p className="text-2xl font-bold bg-gradient-to-r from-purple-600 via-pink-600 to-rose-600 bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">
+                      {insuranceRecommendation.marketing_statement}
+                    </p>
+                    <div className="w-16 h-0.5 bg-gradient-to-r from-purple-500 via-pink-500 to-rose-500 rounded-full mx-auto group-hover:w-24 transition-all duration-300"></div>
+                  </div>
+
+                  {/* Decorative elements */}
+                  <div className="absolute top-0 left-0 w-16 h-16 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-full blur-xl"></div>
+                  <div className="absolute bottom-0 right-0 w-16 h-16 bg-gradient-to-br from-pink-500/10 to-rose-500/10 rounded-full blur-xl"></div>
+                </div>
+              </div>
+
               {/* Key Details */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="bg-gradient-to-br from-indigo-50/80 to-purple-50/80 p-6 rounded-xl border border-indigo-100/50 backdrop-blur-sm hover:shadow-lg transition-all duration-300 group">
@@ -133,14 +163,6 @@ export function LoansPage() {
                     <h3 className="font-semibold text-blue-900 mb-2">Why This Plan is Perfect for You</h3>
                     <p className="text-blue-800">{insuranceRecommendation.why_specific_for_you}</p>
                   </div>
-                </div>
-              </div>
-
-              {/* Marketing Statement */}
-              <div className="text-center bg-gradient-to-br from-purple-50/80 to-pink-50/80 p-6 rounded-xl border border-purple-100/50 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
-                <div className="flex items-center justify-center gap-2 mb-2">
-                  <Heart className="h-5 w-5 text-pink-500 animate-pulse" />
-                  <p className="text-lg font-medium text-purple-900">{insuranceRecommendation.marketing_statement}</p>
                 </div>
               </div>
 

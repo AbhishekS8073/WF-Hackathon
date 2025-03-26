@@ -15,20 +15,21 @@ export function TopBar() {
   };
 
   return (
-    <div className="bg-[#D71E28] text-white px-4 py-1 text-sm">
+    <div className="bg-[#D71E28] text-white px-6 py-2 text-base border-b-4 border-[#FFB81C]">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <div className="flex items-center space-x-4">
-          <Shield size={16} />
-          <span>Secure Banking</span>
+          <span className="text-2xl font-bold">WeCare Bank</span>
         </div>
-        <div className="flex items-center space-x-4">
-          <Bell size={16} />
-          <span>Notifications</span>
+        <div className="flex items-center space-x-6">
+          <div className="flex items-center space-x-3">
+            <Shield size={20} />
+            <span>Secure Banking</span>
+          </div>
           <button
             onClick={handleLogout}
-            className="flex items-center space-x-1 hover:bg-red-700 px-2 py-1 rounded"
+            className="flex items-center space-x-2 hover:bg-red-700 px-3 py-1.5 rounded"
           >
-            <LogOut size={16} />
+            <LogOut size={20} />
             <span>Logout</span>
           </button>
         </div>
