@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 import csv
 import os
+import random
 
 app = Flask(__name__)
 
@@ -327,7 +328,7 @@ def get_recommend_offers_customer_id(customer_id):
     # Sample user transactions data
     user_transactions_data = {
         "transactions": transactions,
-        "user_interest": ["Movies"]
+        "user_interest": [random.choice(user_interests)] 
     }
 
     # Sample credit card options
