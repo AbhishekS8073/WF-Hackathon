@@ -143,16 +143,19 @@ export function CardsPage() {
     },
   ];
 
-  useEffect(() => {
+useEffect(() => {
+    if (!user?.id) {
+      setError("User not authenticated");
+      setIsLoading(false);
+      return;
+    }
+  
+    // Avoid calling API if the offer data is already present
+    if (recommend) return;
+  
+    setIsLoading(true);
+    setError(null);
     const fetchOffersData = async () => {
-      if (!user?.id) {
-        setError("User not authenticated");
-        setIsLoading(false);
-        return;
-      }
-
-      setIsLoading(true);
-      setError(null);
       try {
         const response = await fetch(`/api/recommenedOffers/${user.id}`);
         if (!response.ok) {
@@ -167,9 +170,9 @@ export function CardsPage() {
         setIsLoading(false);
       }
     };
-
+  
     fetchOffersData();
-  }, [user?.id]);
+  }, [user?.id, recommend]);
 
   // Function to handle image loading errors
   const handleImageError = (

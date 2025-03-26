@@ -376,47 +376,48 @@ def get_recommend_offers_customer_id(customer_id):
                 "min_income_required": 1000000,
                 "bank": "Premium FinCorp"
             },
-            {
-                "card_name": "Smart Shopper Cashback",
-                "category": "Shopping",
-                "annual_fee": 799,
-                "cashback": "10% on Amazon, Flipkart, Myntra",
-                "reward_points": "5x on all retail shopping",
+           {
+                "card_name": "Lifestyle Premium Card",
+                "category": "Lifestyle",
+                "annual_fee": 1499,
+                "cashback": "3% on shopping and entertainment",
+                "reward_points": "5x on streaming services",
                 "benefits": [
-                "Buy now, pay later with 0% interest",
-                "Extra warranty on electronics",
-                "Exclusive partner discounts"
+                    "Complimentary movie tickets monthly",
+                    "Buy-one-get-one on weekend shopping",
+                    "Exclusive brand discounts"
                 ],
                 "min_income_required": 400000,
-                "bank": "Retail Bank"
+                "bank": "XYZ Bank"
             },
             {
-                "card_name": "Fuel Saver Gold",
-                "category": "Fuel",
-                "annual_fee": 499,
-                "cashback": "5% on fuel transactions",
-                "reward_points": "3x on fuel and toll payments",
+                "card_name": "Student Essentials",
+                "category": "Education",
+                "annual_fee": 0,
+                "cashback": "2% on educational expenses",
+                "reward_points": "3x on books and stationery",
                 "benefits": [
-                "1% fuel surcharge waiver",
-                "Free road assistance and car insurance discounts",
-                "Monthly fuel vouchers"
+                    "Education loan interest discounts",
+                    "Free educational subscriptions",
+                    "Internship opportunity priorities"
                 ],
-                "min_income_required": 300000,
-                "bank": "Petro Finance"
+                "min_income_required": 100000,
+                "bank": "Education Bank"
             },
             {
-                "card_name": "Online Spender Pro",
-                "category": "Online",
-                "annual_fee": 999,
-                "cashback": "7% on OTT, food delivery & gaming",
-                "reward_points": "8x on e-commerce & digital payments",
+                "card_name": "Business Professional",
+                "category": "Business",
+                "annual_fee": 4999,
+                "cashback": "4% on business expenses",
+                "reward_points": "12x on business travel",
                 "benefits": [
-                "Free Netflix & Spotify subscription",
-                "No-cost EMI on gadgets",
-                "Cyber fraud protection"
+                    "Dedicated business lounge access",
+                    "Expense management tools",
+                    "Tax advisory services",
+                    "Extended warranty on business purchases"
                 ],
-                "min_income_required": 450000,
-                "bank": "DigitalPay Bank"
+                "min_income_required": 1000000,
+                "bank": "Business Bank"
             }
         ]
     }

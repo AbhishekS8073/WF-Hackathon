@@ -28,8 +28,11 @@ interface BankState {
   offers: Offer[];
   notifications: string[];
   loading: boolean;
+  recommendedOffer: any | null;
+  error: string | null;
   addNotification: (notification: string) => void;
   removeNotification: (index: number) => void;
+  fetchRecommendedOffer: (userId: string) => Promise<void>;
 }
 
 export const useBankStore = create<BankState>((set) => ({
@@ -143,6 +146,8 @@ export const useBankStore = create<BankState>((set) => ({
   ],
   notifications: [],
   loading: false,
+  recommendedOffer: null,
+  error: null,
   addNotification: (notification) =>
     set((state) => ({
       notifications: [...state.notifications, notification],
@@ -151,4 +156,17 @@ export const useBankStore = create<BankState>((set) => ({
     set((state) => ({
       notifications: state.notifications.filter((_, i) => i !== index),
     })),
+  fetchRecommendedOffer: async (userId: string) => {
+    set({ loading: true, error: null });
+    try {
+      const response = await fetch(`/api/recommenedOffers/${userId}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+      const data = await response.json();
+      set({ recommendedOffer: data, loading: false });
+    } catch (err: any) {
+      set({ error: err.message, loading: false });
+    }
+  },
 }));
