@@ -328,7 +328,7 @@ def get_recommend_offers_customer_id(customer_id):
     # Sample user transactions data
     user_transactions_data = {
         "transactions": transactions,
-        "user_interest": [random.choice(user_interests)] 
+        "user_interest": random.choice(["Movies", "Technology", "Science", "Gaming", "Mental Health & Wellness", "Social Media & Influencers"]) 
     }
 
     # Sample credit card options
